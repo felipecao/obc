@@ -1,6 +1,10 @@
 package obc.probability;
 
-public class Length extends Measure {
+import java.util.Objects;
+
+public class Length {
+
+  private double value;
 
   enum LengthUnit {
 
@@ -13,16 +17,39 @@ public class Length extends Measure {
     }
   }
 
-  private Length(double len) {
-    super(len);
+  private Length(double i) {
+    this.value = i;
   }
 
-  public static Measure meter(double i) {
-    return new Measure(i);
+  public static Length meter(double i) {
+    return new Length(i);
   }
 
-  public static Measure cm(double i) {
-    return new Measure(i * LengthUnit.CM.length);
+  public static Length cm(double i) {
+    return new Length(i * LengthUnit.CM.length);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Length length = (Length) o;
+    return Double.compare(length.value, value) < 0.01;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
+
+  @Override
+  public String toString() {
+    return "Length{" +
+        "value=" + value +
+        '}';
+  }
 }

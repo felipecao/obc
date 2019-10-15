@@ -1,6 +1,10 @@
 package obc.probability;
 
-public class Volume extends Measure {
+import java.util.Objects;
+
+public class Volume {
+
+  private double value;
 
   enum VolumeUnit {
 
@@ -13,15 +17,32 @@ public class Volume extends Measure {
     }
   }
 
-  private Volume(double volume) {
-    super(volume);
+  private Volume(double i) {
+    this.value = i;
   }
 
-  public static Measure liter(double vol) {
+  public static Volume liter(double vol) {
     return new Volume(vol);
   }
 
-  public static Measure gallon(double vol) {
+  public static Volume gallon(double vol) {
     return new Volume(vol * VolumeUnit.Gal.value);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Volume measure = (Volume) o;
+    return Double.compare(measure.value, value) < 0.01;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 }
