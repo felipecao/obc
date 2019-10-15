@@ -3,8 +3,14 @@ package obc.probability;
 import java.util.Objects;
 
 public class Measure {
+  @Override
+  public String toString() {
+    return "Measure{" +
+            "value=" + value +
+            '}';
+  }
 
-  private double value;
+  protected double value;
 
   protected Measure(double i) {
     this.value = i;
@@ -19,7 +25,7 @@ public class Measure {
       return false;
     }
     Measure measure = (Measure) o;
-    return Double.compare(measure.value, value) < 0.01;
+    return Double.compare(measure.value, value) == 0;
   }
 
   @Override
