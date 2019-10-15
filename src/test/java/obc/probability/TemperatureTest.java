@@ -11,5 +11,6 @@ public class TemperatureTest {
     Temperature f = Temperature.fahrenheit(80);
     Temperature c = Temperature.celsius(26.6667);
     assertTrue(f.equalsTo(c));
+    assertTrue(f.equals(c));
   }
 }

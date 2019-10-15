@@ -2,6 +2,7 @@ package obc.probability;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 
 public class Temperature {
 
@@ -21,6 +22,23 @@ public class Temperature {
 
   public boolean equalsTo(Temperature c) {
     return round(this.value) == round(c.value);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Temperature that = (Temperature) o;
+    return equalsTo(that);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 
   private double round(double v) {
