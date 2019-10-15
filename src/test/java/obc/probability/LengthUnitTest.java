@@ -27,4 +27,32 @@ public class LengthUnitTest {
     Length expected = Length.inch(41.37008);
     assertEquals(inch.add(meter), expected);
   }
+
+  @Test
+  public void canCompareFahrenheitWithCelsius () {
+    Celsius celsius1 = Celsius.fromFh(80);
+    Celsius celsius2 = Celsius.fromValue(26.6667);
+    assertEquals(celsius1, celsius2);
+  }
+
+  @Test
+  public void canAddCelsius() {
+    Celsius celsius1 = Celsius.fromValue(1);
+    Celsius celsius2 = Celsius.fromValue(15);
+    assertEquals(Celsius.fromValue(16), celsius1.add(celsius2));
+  }
+
+  @Test
+  public void testAddIsConmutative() {
+    Celsius celsius1 = Celsius.fromValue(6);
+    Celsius celsius2 = Celsius.fromValue(15);
+    assertEquals(Celsius.fromValue(21), celsius2.add(celsius1));
+  }
+
+//  @Test
+//  public void canNotAddCelsiusWithMeters() {
+//    Celsius celsius1 = Celsius.fromValue(15);
+//    Length meter = Length.meter(15);
+//    assertEquals(Celsius.fromValue(30), celsius1.add(meter));
+//  }
 }

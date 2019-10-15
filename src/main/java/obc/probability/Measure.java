@@ -1,5 +1,7 @@
 package obc.probability;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 public class Measure {
@@ -25,7 +27,12 @@ public class Measure {
       return false;
     }
     Measure measure = (Measure) o;
-    return Double.compare(measure.value, value) == 0;
+    return round(measure.value) == round(value);
+  }
+
+  private double round(double v) {
+    BigDecimal bd = new BigDecimal(v).setScale(4, RoundingMode.HALF_UP);
+    return bd.doubleValue();
   }
 
   @Override
