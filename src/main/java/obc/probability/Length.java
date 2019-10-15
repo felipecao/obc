@@ -1,14 +1,21 @@
 package obc.probability;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 public class Length {
 
-  private double value;
+  private double meters;
+
+  public Length add(Length l2) {
+    return new Length(meters + l2.meters);
+  }
 
   enum LengthUnit {
 
-    CM(0.01);
+    CM(0.01),
+    INCH(0.0254);
 
     double length;
 
@@ -17,8 +24,8 @@ public class Length {
     }
   }
 
-  private Length(double i) {
-    this.value = i;
+  private Length(double meters) {
+    this.meters = meters;
   }
 
   public static Length meter(double i) {
@@ -27,6 +34,10 @@ public class Length {
 
   public static Length cm(double i) {
     return new Length(i * LengthUnit.CM.length);
+  }
+
+  public static Length inch(double i) {
+    return new Length(i * LengthUnit.INCH.length);
   }
 
   @Override
@@ -38,18 +49,23 @@ public class Length {
       return false;
     }
     Length length = (Length) o;
-    return Double.compare(length.value, value) < 0.01;
+    return round(length.meters) == round(meters);
+  }
+
+  private double round(double v) {
+    BigDecimal bd = new BigDecimal(v).setScale(4, RoundingMode.HALF_UP);
+    return bd.doubleValue();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(value);
+    return Objects.hash(meters);
   }
 
   @Override
   public String toString() {
     return "Length{" +
-        "value=" + value +
+        "value=" + meters +
         '}';
   }
 }
