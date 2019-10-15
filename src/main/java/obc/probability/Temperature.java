@@ -6,14 +6,14 @@ import java.util.Objects;
 
 public class Temperature {
 
-  private final double value;
+  private final double degreesCelsius;
 
-  public Temperature(double value) {
-    this.value = value;
+  private Temperature(double degreesCelsius) {
+    this.degreesCelsius = degreesCelsius;
   }
 
   public static Temperature fahrenheit(double i) {
-    return new Temperature((i -32) * 5/9);
+    return new Temperature((i - 32) * 5 / 9);
   }
 
   public static Temperature celsius(double v) {
@@ -21,7 +21,7 @@ public class Temperature {
   }
 
   public boolean equalsTo(Temperature c) {
-    return round(this.value) == round(c.value);
+    return round(this.degreesCelsius) == round(c.degreesCelsius);
   }
 
   @Override
@@ -38,7 +38,7 @@ public class Temperature {
 
   @Override
   public int hashCode() {
-    return Objects.hash(value);
+    return Objects.hash(degreesCelsius);
   }
 
   private double round(double v) {
@@ -49,7 +49,11 @@ public class Temperature {
   @Override
   public String toString() {
     return "Temperature{" +
-        "value=" + value +
+        "value=" + degreesCelsius +
         '}';
+  }
+
+  public Temperature add(Temperature c) {
+    return new Temperature(degreesCelsius + c.degreesCelsius);
   }
 }

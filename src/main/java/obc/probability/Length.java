@@ -12,18 +12,6 @@ public class Length {
     return new Length(meters + l2.meters);
   }
 
-  enum LengthUnit {
-
-    CM(0.01),
-    INCH(0.0254);
-
-    double length;
-
-    LengthUnit(double v) {
-      this.length = v;
-    }
-  }
-
   private Length(double meters) {
     this.meters = meters;
   }
@@ -33,11 +21,11 @@ public class Length {
   }
 
   public static Length cm(double i) {
-    return new Length(i * LengthUnit.CM.length);
+    return new Length(i * 0.01);
   }
 
   public static Length inch(double i) {
-    return new Length(i * LengthUnit.INCH.length);
+    return new Length(i * 0.0254);
   }
 
   @Override

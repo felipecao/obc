@@ -4,29 +4,20 @@ import java.util.Objects;
 
 public class Volume {
 
-  private double value;
+  private static final double CONVERSION_RATE = 3.7854;
 
-  enum VolumeUnit {
+  private double liters;
 
-    Gal(3.7854);
-
-    double value;
-
-    VolumeUnit(double v) {
-      this.value = v;
-    }
+  private Volume(double liters) {
+    this.liters = liters;
   }
 
-  private Volume(double i) {
-    this.value = i;
+  public static Volume liter(double liters) {
+    return new Volume(liters);
   }
 
-  public static Volume liter(double vol) {
-    return new Volume(vol);
-  }
-
-  public static Volume gallon(double vol) {
-    return new Volume(vol * VolumeUnit.Gal.value);
+  public static Volume gallon(double gallons) {
+    return new Volume(gallons * CONVERSION_RATE);
   }
 
   @Override
@@ -38,11 +29,11 @@ public class Volume {
       return false;
     }
     Volume measure = (Volume) o;
-    return Double.compare(measure.value, value) < 0.01;
+    return Double.compare(measure.liters, liters) < 0.01;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(value);
+    return Objects.hash(liters);
   }
 }
