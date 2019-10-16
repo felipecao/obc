@@ -51,4 +51,38 @@ public class ParkingLotTest {
     assertThat(removed, is(false));
   }
 
+  @Test
+  public void ownerNotifiedWhenParkingLotOverLimit() {
+    var owner = new ParkingLotOwner();
+    var parkingLot = new ParkingLot(owner, 4);
+    fillParkingLot(parkingLot, 3);
+
+    assertFalse(owner.hasBeenNotifiedOver75());
+
+    var car = new Car();
+    parkingLot.park(car);
+
+    assertTrue(owner.hasBeenNotifiedOver75());
+  }
+
+  @Test
+  public void ownerNotifiedWhenParkingLotBellowLimit() {
+    var owner = new ParkingLotOwner();
+    var parkingLot = new ParkingLot(owner, 6);
+    fillParkingLot(parkingLot, 1);
+
+    assertTrue(owner.hasBeenNotifiedBellow20());
+    owner.resetNotifications();
+
+    var car = new Car();
+    parkingLot.park(car);
+
+    assertFalse(owner.hasBeenNotifiedBellow20());
+  }
+
+  private void fillParkingLot(ParkingLot lot, int max) {
+    for (int i = 0; i < max; i++) {
+      lot.park(new Car());
+    }
+  }
 }
