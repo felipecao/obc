@@ -6,6 +6,11 @@ public class Measure {
 
   private double value;
 
+  @Override
+  public String toString() {
+    return value + "";
+  }
+
   protected Measure(double i) {
     this.value = i;
   }
@@ -19,11 +24,15 @@ public class Measure {
       return false;
     }
     Measure measure = (Measure) o;
-    return Double.compare(measure.value, value) < 0.01;
+    return Double.compare(measure.value, value) == 0;
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(value);
+  }
+
+  public Measure add(Measure unitInMeters) {
+    return new Measure(this.value + unitInMeters.value);
   }
 }

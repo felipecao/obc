@@ -2,14 +2,16 @@ package obc.probability;
 
 public class Length extends Measure {
 
+
+
   enum LengthUnit {
 
-    CM(0.01);
+    CM(0.01), INCH(0.0254);
 
-    double length;
+    double conversionRate;
 
     LengthUnit(double v) {
-      this.length = v;
+      this.conversionRate = v;
     }
   }
 
@@ -22,7 +24,9 @@ public class Length extends Measure {
   }
 
   public static Measure cm(double i) {
-    return new Measure(i * LengthUnit.CM.length);
+    return new Measure(i * LengthUnit.CM.conversionRate);
   }
+
+  public static Measure inch(double inch) {return new Measure(inch * LengthUnit.INCH.conversionRate);}
 
 }
