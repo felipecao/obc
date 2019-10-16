@@ -18,12 +18,17 @@ public class CollectionParkingLot {
                 .filter(ParkingLot::isSpotAvailable)
                 .findFirst();
 
-        if (freeParkingLot.isPresent()) {
+        if (freeParkingLot.isPresent() && isLessThanEighty(freeParkingLot.get())) {
             freeParkingLot.get().takeSpot(plate1);
         }
     }
 
     public void unpark() {
         parkingLots.stream().findFirst().get().releaseSpot();
+    }
+
+    public boolean isLessThanEighty(ParkingLot pl) {
+        int fullCapacity = pl.getFullCapacity();
+        return pl.getCapacity()/fullCapacity < 0.8;
     }
 }
