@@ -2,6 +2,7 @@ package obc.carparking;
 
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 
@@ -49,6 +50,36 @@ public class ParkingLotTest {
     var removed = parkingLot.fetch(car);
 
     assertThat(removed, is(false));
+  }
+
+  @Test
+  public void notifiesWhenSeventyFiveFull() {
+    var parkingLot = new ParkingLot(100);
+    var vale = mock(Valet.class);
+    parkingLot.subscribe(vale);
+
+    fillParkingLot(parkingLot, 76);r
+    verify(vale, atLeast(1)).notifyCapacity();
+
+  }
+
+  @Test
+  public void notifiesWhenLowCapacityInAParking() {
+    var parkingLot = new ParkingLot(100);
+    var vale = mock(Valet.class);
+    parkingLot.subscribe(vale);
+
+    fillParkingLot(parkingLot, 15);
+
+    verify(vale, atLeast(1)).notifyCapacity();
+
+  }
+
+
+  private void fillParkingLot(ParkingLot lot, int max) {
+    for (int i = 0; i < max; i++) {
+      lot.park(new Car());
+    }
   }
 
 }

@@ -20,4 +20,15 @@ public class Valet {
     }
     return false;
   }
+
+  public void notifySeventyFivePercentUsage() {
+
+  }
+
+  public void notifyLowCapacityUsage() {
+  }
+
+  public void notifyCapacity() {
+
+  }
 }
