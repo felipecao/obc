@@ -50,4 +50,5 @@ public class ParkingLotTest {
 
     assertThat(removed, is(false));
   }
+
 }
