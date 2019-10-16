@@ -9,44 +9,44 @@ public class ParkingLotTest {
 
   @Test
   public void canParkIfHasSpace() {
-    var car = new Car();
-    var parkingLot = new ParkingLot(1);
+    Car car = new Car();
+    ParkingLot parkingLot = new ParkingLot(1);
 
-    var parked = parkingLot.park(car);
+    boolean parked = parkingLot.park(car);
 
     assertTrue(parked);
   }
 
   @Test
   public void canNotParkIfFull() {
-    var car1 = new Car();
-    var parkingLot = new ParkingLot(1);
+    Car car1 = new Car();
+    ParkingLot parkingLot = new ParkingLot(1);
 
     parkingLot.park(car1);
 
-    var car2 = new Car();
-    var couldPark = parkingLot.park(car2);
+    Car car2 = new Car();
+    boolean couldPark = parkingLot.park(car2);
 
     assertFalse(couldPark);
   }
 
   @Test
   public void canLeaveParking() {
-    var car = new Car();
-    var parkingLot = new ParkingLot(1);
+    Car car = new Car();
+    ParkingLot parkingLot = new ParkingLot(1);
     parkingLot.park(car);
 
-    var removed = parkingLot.fetch(car);
+    boolean removed = parkingLot.fetch(car);
 
     assertThat(removed, is(true));
   }
 
   @Test
   public void canNotRetrieveNonExistentCar() {
-    var car = new Car();
-    var parkingLot = new ParkingLot(1);
+    Car car = new Car();
+    ParkingLot parkingLot = new ParkingLot(1);
 
-    var removed = parkingLot.fetch(car);
+   boolean removed = parkingLot.fetch(car);
 
     assertThat(removed, is(false));
   }

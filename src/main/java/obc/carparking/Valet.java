@@ -13,7 +13,8 @@ public class Valet {
   }
 
   public boolean park(Car c) {
-    for (var lot: lots) {
+    for (ParkingLot lot: lots) {
+      if(!lot.isLessThan80PercentFull()) return false;
       if (lot.park(c)) {
         return true;
       }

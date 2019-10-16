@@ -20,6 +20,10 @@ public class ParkingLot {
     return false;
   }
 
+  public boolean isLessThan80PercentFull(){
+    return (spaces.size()/spacesAvailable <= 0.8);
+  }
+
 
   public boolean fetch(Car car) {
     return spaces.remove(car);
