@@ -13,7 +13,7 @@ public class Valet {
   }
 
   public boolean park(Car c) {
-    for (var lot: lots) {
+    for (ParkingLot lot: lots) {
       if (lot.park(c)) {
         return true;
       }

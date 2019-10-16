@@ -9,50 +9,50 @@ public class ValetTest {
 
   @Test
   public void canParkIfHasSpace() {
-    var car = new Car();
-    var parkingLot = new Valet(new ParkingLot(1));
+    Car car = new Car();
+    Valet parkingLot = new Valet(new ParkingLot(1, new Owner()));
 
-    var parked = parkingLot.park(car);
+    boolean parked = parkingLot.park(car);
 
     assertTrue(parked);
   }
 
   @Test
   public void canParkIfAtLeastOneSpaceAvailableInAtLeastOneParkingLot() {
-    var car = new Car();
-    var fullParkingLot = new ParkingLot(0);
-    var oneSpaceParkingLot = new ParkingLot(1);
-    var valet = new Valet(fullParkingLot, oneSpaceParkingLot);
+    Car car = new Car();
+    ParkingLot fullParkingLot = new ParkingLot(0, new Owner());
+    ParkingLot oneSpaceParkingLot = new ParkingLot(1, new Owner());
+    Valet valet = new Valet(fullParkingLot, oneSpaceParkingLot);
 
-    var parked = valet.park(car);
+    boolean parked = valet.park(car);
 
     assertTrue(parked);
   }
 
   @Test
   public void canOnlyParkWhen79PercentAvailability() {
-    var almostFull = new ParkingLot(100);
+    ParkingLot almostFull = new ParkingLot(100, new Owner());
 
     fillParkingLot(almostFull,78);
 
-    var valet = new Valet(almostFull);
+    Valet valet = new Valet(almostFull);
 
-    var car = new Car();
-    var parked = valet.park(car);
+    Car car = new Car();
+    boolean parked = valet.park(car);
 
     assertTrue(parked);
   }
 
   @Test
   public void canNotParkWhen80PercentAvailability() {
-    var fullParkingLot = new ParkingLot(10);
+    ParkingLot fullParkingLot = new ParkingLot(10, new Owner());
 
     fillParkingLot(fullParkingLot,8);
 
-    var valet = new Valet(fullParkingLot);
+    Valet valet = new Valet(fullParkingLot);
 
-    var car = new Car();
-    var parked = valet.park(car);
+    Car car = new Car();
+    boolean parked = valet.park(car);
 
     assertFalse(parked);
   }

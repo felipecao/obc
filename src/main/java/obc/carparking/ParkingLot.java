@@ -7,15 +7,21 @@ public class ParkingLot {
 
   private final List<Car> spaces;
   private final int totalNumberOfParkingSpots;
+  private final Owner owner;
 
-  public ParkingLot(int spaces) {
+  public ParkingLot(int spaces, Owner owner) {
     totalNumberOfParkingSpots = spaces;
+    this.owner = owner;
     this.spaces = new ArrayList<>(totalNumberOfParkingSpots);
   }
 
   public boolean park(Car c) {
     if (spaces.size() < totalNumberOfParkingSpots * 0.8) {
-      return spaces.add(c);
+      boolean result = spaces.add(c);
+      if (spaces.size() > totalNumberOfParkingSpots * 0.75) {
+        owner.notifyParkingFull();
+      }
+      return result;
     }
     return false;
   }
