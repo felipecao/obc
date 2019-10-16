@@ -182,11 +182,11 @@ public class ParkingTest {
         assertFalse(owner.hasBeenNotifiedFor("parkingLotIsBelow20Percent"));
     }
 
-    private String randomPlate() {
-        return UUID.randomUUID().toString();
+    private Car aCar() {
+        return new Car(randomPlate());
     }
 
-    private Car aCar() {
-        return new Car(UUID.randomUUID().toString());
+    private String randomPlate() {
+        return UUID.randomUUID().toString();
     }
 }
