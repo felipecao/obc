@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import static java.util.stream.IntStream.range;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 
 public class ParkingTest {
 
@@ -211,6 +214,44 @@ public class ParkingTest {
         attendant.park(aHandicappedCar);
 
         assertTrue(accessibleParking.fetch(aHandicappedCar));
+    }
+
+    @Test
+    public void attendent_should_not_park_a_luxury_car_if_doesnot_have_certificate() {
+        ParkingLot parkingLot = new ParkingLot(2);
+
+        Attendant attendant = new Attendant(parkingLot);
+        Car luxuryCar = new Car(randomPlate(), CarTrait.LUXURY);
+
+        attendant.park(luxuryCar);
+
+        assertFalse(attendant.park(luxuryCar));
+    }
+
+    @Test
+    public void attendent_should_park_a_luxury_car_if_does_have_certificate() {
+        ParkingLot parkingLot = new ParkingLot(2);
+
+        Attendant attendant = new Attendant(parkingLot);
+        Car luxuryCar = new Car(randomPlate(), CarTrait.LUXURY);
+
+        attendant.setCertificate(true);
+        attendant.park(luxuryCar);
+
+        assertTrue(attendant.park(luxuryCar));
+    }
+
+    @Test
+    public void car_should_be_parked_by_the_last_subAttendant_if_handicapped() {
+        ParkingLot parkingLot = new ParkingLot(2);
+        ParkingLot accessiblePakingLot = mock(ParkingLot.class);
+
+        Attendant attendant = new Attendant(parkingLot, accessiblePakingLot);
+        Car handicappedCar = aHandicappedCar();
+        attendant.park(handicappedCar);
+
+//        assertTrue(attendant.park(handicappedCar));
+        verify(accessiblePakingLot).park(handicappedCar);
     }
 
     private Car aLargeCar() {
