@@ -5,18 +5,33 @@ import java.util.List;
 
 public class ParkingLot {
 
+    static class NullParkingLot extends ParkingLot {
+
+        public NullParkingLot(int capacity, boolean isHadicappedFriendly) {
+            super(capacity, isHadicappedFriendly);
+        }
+
+        @Override
+        public boolean park(Car car) {
+            return false;
+        }
+    }
+
+    public static final ParkingLot NULL_PARKING_LOG = new NullParkingLot(0, false);
     private static final double MAX_CAPACITY = 0.8;
     private static final double NOTIFICATION_CAPACITY = 0.75;
     private static final double MIN_CAPACITY = 0.20;
 
     private final List<Car> parkedCars;
     private final int capacity;
+    private final boolean isHadicappedFriendly;
     private ParkingLotOwner owner;
     private boolean hasGoneBeyond20PercentOccupation = false;
     private boolean open = true;
 
-    public ParkingLot(final int capacity) {
+    public ParkingLot(final int capacity, boolean isHadicappedFriendly) {
         this.capacity = capacity;
+        this.isHadicappedFriendly = isHadicappedFriendly;
         parkedCars = new ArrayList<>(capacity);
     }
 
@@ -72,5 +87,13 @@ public class ParkingLot {
 
     public void close() {
         open = false;
+    }
+
+    public int occupancy() {
+        return parkedCars.size();
+    }
+
+    public boolean isHandicappedFriendly() {
+        return isHadicappedFriendly;
     }
 }
