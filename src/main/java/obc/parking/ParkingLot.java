@@ -11,13 +11,27 @@ public class ParkingLot {
 
     private final List<Car> parkedCars;
     private final int capacity;
+    private final boolean handicappedEnabled;
+
+    public boolean isHandicappedEnabled() {
+        return handicappedEnabled;
+    }
+
     private ParkingLotOwner owner;
     private boolean hasGoneBeyond20PercentOccupation = false;
     private boolean open = true;
 
+
+    public ParkingLot(final int capacity, final boolean handicappedEnabled) {
+        this.capacity = capacity;
+        parkedCars = new ArrayList<>(capacity);
+        this.handicappedEnabled = handicappedEnabled;
+    }
+
     public ParkingLot(final int capacity) {
         this.capacity = capacity;
         parkedCars = new ArrayList<>(capacity);
+        this.handicappedEnabled = true;
     }
 
     public void registerNotificationListener(ParkingLotOwner owner) {

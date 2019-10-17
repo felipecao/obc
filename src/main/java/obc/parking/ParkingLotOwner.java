@@ -15,6 +15,7 @@ public class ParkingLotOwner {
     }
 
     public void parkingLotIsOver75Percent() {
+
         notifications.add("parkingLotIsOver75Percent");
     }
 

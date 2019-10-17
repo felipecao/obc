@@ -11,9 +11,21 @@ public class Attendant {
     }
 
     public boolean park(Car car) {
-        return parkingLots
-                .stream()
-                .anyMatch(lot -> lot.park(car));
+        boolean result = false;
+        switch (car.getTrait()) {
+            case NORMAL:
+                result = parkingLots
+                        .stream()
+                        .anyMatch(lot -> lot.park(car));
+                break;
+            case LARGE:
+                parkingLots.stream().sorted().findFirst();
+                break;
+            case HANDICAPPED:
+                parkingLots.stream().filter(parkingLot -> parkingLot.isHandicappedEnabled()).findFirst(lot -> lot.park(car));
+                break;
+        }
+        return result;
     }
 
     public boolean fetch(Car car) {

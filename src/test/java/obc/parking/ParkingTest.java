@@ -4,8 +4,7 @@ import org.junit.Test;
 import java.util.UUID;
 
 import static java.util.stream.IntStream.range;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ParkingTest {
 
@@ -180,6 +179,45 @@ public class ParkingTest {
         lot.fetch(car);
 
         assertFalse(owner.hasBeenNotifiedFor("parkingLotIsBelow20Percent"));
+    }
+
+    @Test
+    public void attendant_should_park_in_least_occupied_parking_for_large_cars() {
+        ParkingLot lot = new ParkingLot(2);
+        ParkingLot lot2 = new ParkingLot(3);
+
+        Attendant attendant = new Attendant(lot, lot2);
+
+        Car car = aCar();
+
+        attendant.park(car);
+
+        Car aLargeCar = aLargeCar();
+
+        attendant.park(aLargeCar);
+
+        assertTrue(lot2.fetch(aLargeCar));
+
+    }
+
+    @Test
+    public void attendent_should_park_in_first_handicapped_enabled_parking_for_handicapped_cars() {
+        ParkingLot accessibleParking = new ParkingLot(2);
+        ParkingLot badParking = new ParkingLot(3, false);
+
+        Attendant attendant = new Attendant(accessibleParking, badParking);
+        Car aHandicappedCar = aHandicappedCar();
+
+        attendant.park(aHandicappedCar);
+
+        assertTrue(accessibleParking.fetch(aHandicappedCar));
+    }
+
+    private Car aLargeCar() {
+        return new Car(randomPlate(), CarTrait.LARGE);
+    }
+    private Car aHandicappedCar() {
+        return new Car(randomPlate(), CarTrait.HANDICAPPED);
     }
 
     private Car aCar() {
