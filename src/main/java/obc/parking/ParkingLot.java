@@ -73,4 +73,8 @@ public class ParkingLot {
     public void close() {
         open = false;
     }
+
+    public int occupancy() {
+        return parkedCars.size() / capacity * 100;
+    }
 }

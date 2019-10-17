@@ -1,6 +1,7 @@
 package obc.parking;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Attendant {
@@ -11,6 +12,14 @@ public class Attendant {
     }
 
     public boolean park(Car car) {
+        if (car.size().equals("LARGE")) {
+            return parkingLots
+                    .stream()
+                    .sorted(byOccupancy())
+                    .findFirst()
+                    .get()
+                    .park(car);
+        }
         return parkingLots
                 .stream()
                 .anyMatch(lot -> lot.park(car));
@@ -20,5 +29,9 @@ public class Attendant {
         return parkingLots
                 .stream()
                 .anyMatch(lot -> lot.fetch(car));
+    }
+
+    private Comparator<ParkingLot> byOccupancy() {
+        return Comparator.comparingInt(ParkingLot::occupancy);
     }
 }
