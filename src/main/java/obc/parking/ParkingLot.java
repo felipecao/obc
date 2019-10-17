@@ -11,11 +11,18 @@ public class ParkingLot {
 
     private final List<Car> parkedCars;
     private final int capacity;
+    private boolean handicappedFriendly = false;
     private ParkingLotOwner owner;
     private boolean hasGoneBeyond20PercentOccupation = false;
     private boolean open = true;
 
     public ParkingLot(final int capacity) {
+        this.capacity = capacity;
+        parkedCars = new ArrayList<>(capacity);
+    }
+
+    public ParkingLot(int capacity, boolean handicappedFriendly) {
+        this.handicappedFriendly = handicappedFriendly;
         this.capacity = capacity;
         parkedCars = new ArrayList<>(capacity);
     }
@@ -42,6 +49,10 @@ public class ParkingLot {
         notifyMaxCapacity();
 
         return isParked;
+    }
+
+    public double getCapacity() {
+        return parkedCars.size()/(double)capacity;
     }
 
     private void notifyMaxCapacity() {
@@ -72,5 +83,9 @@ public class ParkingLot {
 
     public void close() {
         open = false;
+    }
+
+    public boolean isHandicappedFriendly() {
+        return this.handicappedFriendly;
     }
 }

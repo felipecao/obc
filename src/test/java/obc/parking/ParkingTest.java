@@ -1,11 +1,12 @@
 package obc.parking;
 
 import org.junit.Test;
+
+import java.util.List;
 import java.util.UUID;
 
 import static java.util.stream.IntStream.range;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ParkingTest {
 
@@ -55,48 +56,48 @@ public class ParkingTest {
 
     @Test
     public void attendant_parks_in_a_lot() {
-        Attendant attendant = new Attendant(lot);
+        Assistant assistant = new Assistant(lot);
         Car car = aCar();
-        assertTrue(attendant.park(car));
+        assertTrue(assistant.park(car));
     }
 
     @Test
     public void attendant_parks_in_first_lot() {
-        Attendant attendant = new Attendant(lot, new ParkingLot(100));
+        Assistant assistant = new Assistant(lot, new ParkingLot(100));
         Car car = aCar();
-        assertTrue(attendant.park(car));
+        assertTrue(assistant.park(car));
     }
 
     @Test
     public void attendant_cannot_park_in_full_lot() {
-        Attendant attendant = new Attendant(new ParkingLot(0));
+        Assistant assistant = new Assistant(new ParkingLot(0));
         Car car = aCar();
-        assertFalse(attendant.park(car));
+        assertFalse(assistant.park(car));
     }
 
     @Test
     public void attendant_cannot_park_in_first_free_lot() {
-        Attendant attendant = new Attendant(new ParkingLot(0), lot);
+        Assistant assistant = new Assistant(new ParkingLot(0), lot);
         Car car = aCar();
-        assertTrue(attendant.park(car));
+        assertTrue(assistant.park(car));
     }
 
     @Test
     public void attendant_retrieves_car() {
-        Attendant attendant = new Attendant(lot);
+        Assistant assistant = new Assistant(lot);
         Car car = aCar();
 
-        attendant.park(car);
+        assistant.park(car);
 
-        assertTrue(attendant.fetch(car));
+        assertTrue(assistant.fetch(car));
     }
 
     @Test
     public void attendant_cannot_retrieve_an_unparked_car() {
-        Attendant attendant = new Attendant(lot);
+        Assistant assistant = new Assistant(lot);
         Car car = aCar();
 
-        assertFalse(attendant.fetch(car));
+        assertFalse(assistant.fetch(car));
     }
 
     @Test
@@ -180,6 +181,76 @@ public class ParkingTest {
         lot.fetch(car);
 
         assertFalse(owner.hasBeenNotifiedFor("parkingLotIsBelow20Percent"));
+    }
+
+    @Test
+    public void assistantParksLargeCarsInTheEmptiestParkingLot() {
+        ParkingLot fullerLot = new ParkingLot(10);
+        ParkingLot emptierLot = new ParkingLot(10);
+
+        Assistant assistant = new Assistant(fullerLot, emptierLot);
+
+        fullerLot.park(aCar());
+
+        Car car = Car.largeCar(randomPlate());
+
+        assistant.park(car);
+
+        assertTrue(emptierLot.fetch(car));
+    }
+
+    @Test
+    public void assistantParksHandicapedCarsInTheFirstParkingLotThatAcceptsThem() {
+        ParkingLot lot = new ParkingLot(10);
+        ParkingLot handicapedFriendlylot = new ParkingLot(10, true);
+
+        Assistant assistant = new Assistant(lot, handicapedFriendlylot);
+
+        Car car = Car.handicapedCar(randomPlate());
+
+        assistant.park(car);
+
+        assertTrue(handicapedFriendlylot.fetch(car));
+    }
+
+    @Test
+    public void assistantCanNotParkFancyCarsIfNotCertified() {
+        ParkingLot lot = new ParkingLot(10);
+        Assistant assistant = new Assistant(lot);
+
+        Car car = Car.fancyCar(randomPlate());
+        assertFalse(assistant.park(car));
+
+    }
+
+
+    @Test
+    public void assistantCanParkFancyCarsOnlyIfCertified() {
+        ParkingLot lot = new ParkingLot(10);
+        Assistant assistant = new Assistant(lot);
+        assistant.certify();
+
+        Car car = Car.fancyCar(randomPlate());
+        assertTrue(assistant.park(car));
+
+    }
+
+    @Test
+    public void assistantsCanHireAssistantsToTakeCareOfTheirParkingLots() {
+        ParkingLot lot1 = new ParkingLot(10);
+        ParkingLot lot2 = new ParkingLot(10);
+        ParkingLot lot3 = new ParkingLot(10);
+
+        Assistant fatherAssistant = new Assistant(lot1,lot2,lot3);
+
+        Assistant childAssistant = fatherAssistant.hireAssistant(lot1);
+        assertEquals(fatherAssistant.hiredAssistants(), List.of(childAssistant));
+
+        Car car = aCar();
+        fatherAssistant.park(car);
+        assertEquals(0, lot1.getCapacity(), 0.01);
+        assertEquals(0.1, lot2.getCapacity(), 0.01);
+
     }
 
     private Car aCar() {
