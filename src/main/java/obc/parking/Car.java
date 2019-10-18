@@ -1,7 +1,5 @@
 package obc.parking;
 
-import java.util.List;
-
 public class Car {
     private final boolean requiresCertifiedDriver;
     private String licencePlate;
@@ -17,9 +15,5 @@ public class Car {
 
     public boolean doesRequireCertifiedDriver() {
         return requiresCertifiedDriver;
-    }
-
-    public ParkingLot wherePark(List<ParkingLot> parkingLots) {
-        return null;
     }
 }

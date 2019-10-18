@@ -1,24 +1,15 @@
 package obc.parking;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Attendant {
     private final boolean certified;
     private List<ParkingLot> parkingLots;
-    private List<Attendant> myHiredAttendants = new ArrayList<>();
-    private String name;
-    private ParkingLotOwner owner;
-
-    public Attendant(List<ParkingLot> parkingLots, String name) {
-        this.parkingLots = parkingLots;
-        this.name = name;
-        this.certified = false;
-    }
 
     public Attendant(ParkingLot... lots) {
-        this.parkingLots = new ArrayList<>(Arrays.asList(lots));
+        this.parkingLots = Arrays.asList(lots);
         this.certified = false;
     }
 
@@ -32,8 +23,11 @@ public class Attendant {
             return false;
         }
 
-        if (car instanceof LargeCar || car instanceof HandicappedCar) {
-            return car.wherePark(parkingLots).park(car);
+        if (car instanceof LargeCar) {
+            return findLeastOccupied().park(car);
+        }
+        if (car instanceof HandicappedCar) {
+            return findFirstHandicappedFriendly().park(car);
         }
 
         return parkingLots
@@ -41,6 +35,15 @@ public class Attendant {
                 .anyMatch(lot -> lot.park(car));
     }
 
+    final Comparator<ParkingLot> byOccupancy = Comparator.comparingInt(ParkingLot::occupancy);
+
+    private ParkingLot findLeastOccupied() {
+        return parkingLots.stream().sorted(byOccupancy).findFirst().get();
+    }
+
+    private ParkingLot findFirstHandicappedFriendly() {
+        return parkingLots.stream().filter(ParkingLot::isHandicappedFriendly).findFirst().orElse(ParkingLot.NULL_PARKING_LOG);
+    }
 
     public boolean fetch(Car car) {
         return parkingLots
@@ -50,23 +53,5 @@ public class Attendant {
 
     public boolean isCertified() {
         return certified;
-    }
-
-    public boolean hire(Attendant hiredAttendant) {
-        if (parkingLots.size() > 1) {
-            myHiredAttendants.add(hiredAttendant);
-            hiredAttendant.assign(parkingLots.stream().findFirst().get());
-            return true;
-        }
-        return false;
-    }
-
-    private void assign(ParkingLot parkingLot) {
-        parkingLots.add(parkingLot);
-        owner.notifyAttendantAndParkingLot();
-    }
-
-    public void registerNotificationListener(ParkingLotOwner owner) {
-        this.owner = owner;
     }
 }
