@@ -1,8 +1,6 @@
 package obc.parking;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ParkingLotOwner {
 
@@ -29,5 +27,15 @@ public class ParkingLotOwner {
 
     public boolean hasBeenNotifiedFor(String message) {
         return notifications.contains(message);
+    }
+
+    public void notifyAttendantAndParkingLot() {
+
+    }
+
+    public Map<Integer, Integer> reportOccupancyOfParkingLot(ParkingLot lot){
+        HashMap<Integer, Integer> occupancyReport = new HashMap<>();
+        occupancyReport.put(lot.occupancy(), (lot.getCapacity()));
+        return occupancyReport;
     }
 }

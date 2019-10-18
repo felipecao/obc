@@ -203,7 +203,7 @@ public class ParkingTest {
         ParkingLot handicappedFirendlyLot = new ParkingLot(3, true);
         ParkingLot emptyLot = new ParkingLot(10, false);
 
-        Attendant attendant = new Attendant(emptyLot,handicappedFirendlyLot);
+        Attendant attendant = new Attendant(emptyLot, handicappedFirendlyLot);
 
         HandicappedCar handicappedCar = new HandicappedCar("largeCar");
 
@@ -231,6 +231,18 @@ public class ParkingTest {
         assertTrue(certifiedAttendant.park(fancyCar));
         assertEquals(1, emptyLot.occupancy());
     }
+
+    @Test
+    public void owner_knows_names_of_attendant_and_parkingLot_they_manage() {
+        ParkingLot emptyLot = new ParkingLot(10, false);
+        Attendant certifiedAttendant = new Attendant(emptyLot, true);
+        Car fancyCar = new Car("plate", true);
+
+        assertTrue(certifiedAttendant.park(fancyCar));
+        assertEquals(1, emptyLot.occupancy());
+    }
+
+
 
     private Car aCar() {
         return new Car(randomPlate());
